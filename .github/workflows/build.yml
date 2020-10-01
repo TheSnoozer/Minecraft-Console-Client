@@ -43,7 +43,7 @@ jobs:
 
     - name: Add version information
       env:
-        FULL_VERSION_NUMBER: ${{ '[assembly: AssemblyConfiguration("Github action build ${{ github.run_id }} / ${{ github.run_number }}, built on ${{ steps.time.outputs.time }} from commit ${{ github.sha }}.")' }}
+        FULL_VERSION_NUMBER: '[assembly: AssemblyConfiguration("Github action build ${{ github.run_id }} / ${{ github.run_number }}, built on ${{ steps.time.outputs.time }} from commit ${{ github.sha }}.")'
       run: echo ${{ env.FULL_VERSION_NUMBER }} >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
 
     - name: show version information
