@@ -34,10 +34,17 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
 
+    - name: Get Time
+      id: time
+      uses: nanzm/get-time-action@v1.0
+      with:
+        timeZone: 8
+        format: 'YYYY-MM-DD-HH-mm-ss'
+
     - name: Add version information
       run: |
        echo. >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
-       echo "[assembly: AssemblyConfiguration(\"Github action build ${{ github.action }}, built on %DATE% from commit ${{ github.sha }}\")]" >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
+       echo "[assembly: AssemblyConfiguration(\"Github action build ${{ github.run_id }} / ${{ github.run_number }}, built on ${{ steps.time.outputs.time }} from commit ${{ github.sha }}\")]" >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
 
 
     - name: Build MinecraftClient
