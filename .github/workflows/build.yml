@@ -42,7 +42,7 @@ jobs:
         format: 'YYYY-MM-DD-HH-mm-ss'
 
     - name: Add version information
-      run: echo "[assembly: AssemblyConfiguration(\"Github action build ${{ github.run_id }} / ${{ github.run_number }}, built on ${{ steps.time.outputs.time }} from commit ${{ github.sha }}\")]" >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
+      run: echo ${{ format('{{[assembly: AssemblyConfiguration("Github action build {0} / {1}, built on {2} from commit {3}.")) }}', ${{ github.run_id }}, ${{ github.run_number }}, ${{ steps.time.outputs.time }}, ${{ github.sha }} }} >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
 
     - name: show version information
       run: type ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
