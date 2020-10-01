@@ -6,9 +6,9 @@ name: MinecraftConsoleClient
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, github-actions ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, github-actions ]
 
 jobs:
   build:
