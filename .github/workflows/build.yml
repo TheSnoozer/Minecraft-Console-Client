@@ -1,0 +1,54 @@
+# For more information on GitHub Actions, refer to https://github.com/features/actions
+# For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
+# refer to https://github.com/microsoft/github-actions-for-desktop-apps
+
+name: MinecraftConsoleClient
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    # Install .NET Core
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
+
+    - name: Add version information
+      run: |
+       echo. >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
+       echo "[assembly: AssemblyConfiguration(\"Github action build ${{ github.action }}, built on %DATE% from commit ${{ github.sha }}\")]" >> ${{ github.workspace }}\MinecraftClient\Properties\AssemblyInfo.cs
+
+
+    - name: Build MinecraftClient
+      # msbuild MinecraftClient.sln /t:build /p:Configuration=Release /p:Platform="x86" /p:TargetFrameworkVersion="v4.0" /verbosity:minimal
+      run: msbuild ${{ github.workspace }}\MinecraftClient.sln /t:build /p:Configuration=$env:Configuration /p:Platform="x86" /p:TargetFrameworkVersion="v4.0" /verbosity:minimal
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # Upload the package: https://github.com/marketplace/actions/upload-artifact
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Package
+        path: MinecraftClient\bin\*\MinecraftClient.exe
