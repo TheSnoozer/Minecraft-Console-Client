@@ -51,7 +51,7 @@ jobs:
 
     - name: Build MinecraftClient
       # msbuild MinecraftClient.sln /t:build /p:Configuration=Release /p:Platform="x86" /p:TargetFrameworkVersion="v4.0" /verbosity:minimal
-      run: msbuild ${{ github.workspace }}\MinecraftClient.sln /t:build /p:Configuration=$env:Configuration /p:Platform="x86" /p:TargetFrameworkVersion="v4.0" /verbosity:minimal
+      run: msbuild ${{ github.workspace }}\MinecraftClient.sln /t:clean,build /p:Configuration=$env:Configuration /p:Platform="x86" /p:TargetFrameworkVersion="v4.0" /verbosity:minimal
       env:
         Configuration: ${{ matrix.configuration }}
 
