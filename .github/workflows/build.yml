@@ -55,9 +55,10 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Upload the package: https://github.com/marketplace/actions/upload-artifact
-    - name: Upload build artifacts
+    # Upload the artifacts: https://github.com/marketplace/actions/upload-artifact
+    - name: Upload ${{ matrix.configuration }} artifact
       uses: actions/upload-artifact@v2
       with:
-        name: Package
-        path: MinecraftClient\bin\*\MinecraftClient.exe
+        name: MinecraftClient-${{ matrix.configuration }}
+        path: MinecraftClient\bin\${{ matrix.configuration }}\MinecraftClient.exe
+        if-no-files-found: error
